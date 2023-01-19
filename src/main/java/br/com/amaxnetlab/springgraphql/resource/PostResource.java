@@ -11,30 +11,30 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
-import java.util.Collection;
-
 @Controller
-public class UserResource {
-    @Autowired
-    UserService userService;
+public class PostResource {
 
     @Autowired
     PostService postService;
 
+    @Autowired
+    UserService userService;
+
+
     @MutationMapping
-    public User createUser (@Argument String name, @Argument String email) {
-        return userService.create(name, email);
+    public Post createPost (@Argument String title, @Argument String content, @Argument String author) {
+        return postService.create(title, content, author);
     }
 
     @QueryMapping
-    public User user (@Argument String id) {
-        return userService.findById(id);
+    public Post post (@Argument String id) {
+        return postService.findById(id);
     }
 
     @SchemaMapping
-    public Collection<Post> posts (User user) {
-        System.out.println("posts");
-        System.out.println(user.getId());
-        return postService.findAllByAuthorId(user.getId().toString());
+    public User author (Post post) {
+        System.out.println("user");
+        System.out.println(post.getAuthor().getId());
+        return userService.findById(post.getAuthor().getId().toString());
     }
 }

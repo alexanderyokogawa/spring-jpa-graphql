@@ -5,29 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "tb-user")
-public class User implements Serializable {
+@Table(name = "tb-post")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Post implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @NonNull
-    private String name;
+    private String title;
     @NonNull
-    private String email;
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Post> posts = new HashSet<>();
-
+    private String content;
+    @CreationTimestamp
+    private Date publishedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User author;
 }

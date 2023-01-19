@@ -28,7 +28,8 @@ public class UserService implements Serializable {
         User user = new User(
                 UUID.randomUUID(),
                 name,
-                email
+                email,
+                null
         );
 
         return userRepository.save(user);
